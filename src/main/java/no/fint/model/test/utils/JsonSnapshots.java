@@ -20,10 +20,15 @@ public class JsonSnapshots {
 
         try {
             ImmutableSet<ClassPath.ClassInfo> classInfos = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClassesRecursive(basePackage);
-            classInfos.forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
+            classInfos.stream().filter(classInfo -> isNotTestClass(classInfo.getName())).forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private boolean isNotTestClass(String name) {
+        String className = name.toLowerCase();
+        return !className.endsWith("test") && !className.endsWith("spec");
     }
 
     public void create() {
