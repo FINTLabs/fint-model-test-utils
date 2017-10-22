@@ -1,6 +1,7 @@
 package no.fint.model.test.utils;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 public class JsonSnapshots {
     @Getter
     private List<JsonSnapshot> jsonSnapshotList;
@@ -16,8 +18,16 @@ public class JsonSnapshots {
     public JsonSnapshots(String basePackage) {
         jsonSnapshotList = new ArrayList<>();
 
-        Set<Class<?>> classes = new Reflections(basePackage, new SubTypesScanner(false)).getSubTypesOf(Object.class);
-        classes.forEach(clazz -> jsonSnapshotList.add(new JsonSnapshot(clazz)));
+        Set<String> allTypes = new Reflections(basePackage, new SubTypesScanner(false)).getAllTypes();
+        allTypes.forEach(type -> {
+            try {
+                Class<?> clazz = Class.forName(type);
+                log.info("Adding class: {}", type);
+                jsonSnapshotList.add(new JsonSnapshot(clazz));
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException(e);
+            }
+        });
     }
 
     public void create() {
