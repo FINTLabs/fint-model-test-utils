@@ -1,5 +1,6 @@
 package no.fint.model.test.utils
 
+import no.fint.model.test.utils.testmodel.TestModel
 import spock.lang.Specification
 
 class JsonSnapshotSpec extends Specification {

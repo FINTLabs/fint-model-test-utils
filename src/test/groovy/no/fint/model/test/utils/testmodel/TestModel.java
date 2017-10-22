@@ -1,4 +1,4 @@
-package no.fint.model.test.utils;
+package no.fint.model.test.utils.testmodel;
 
 import lombok.Data;
 
