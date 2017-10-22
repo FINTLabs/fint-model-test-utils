@@ -11,7 +11,7 @@ apply plugin: 'jacoco'
 
 jar {
     baseName = 'fint-model-test-utils'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
 }
 
 sourceCompatibility = 1.8
@@ -29,7 +29,7 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile('com.google.guava:guava:23.2-jre')
-    compile('commons-io:commons-io:2.5')
+    compile('commons-io:commons-io:2.6')
     compile('io.github.benas:random-beans:3.7.0')
     compile("org.projectlombok:lombok:${lombokVersion}")
 

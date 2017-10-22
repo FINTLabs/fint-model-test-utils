@@ -22,6 +22,7 @@ public class JsonSnapshot {
 
     private String snapshotFolder;
     private Class<?> modelClass;
+
     @Getter(AccessLevel.PACKAGE)
     private File snapshotFile;
     @Getter(AccessLevel.PACKAGE)
