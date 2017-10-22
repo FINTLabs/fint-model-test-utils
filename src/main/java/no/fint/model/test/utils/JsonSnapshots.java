@@ -1,14 +1,14 @@
 package no.fint.model.test.utils;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 public class JsonSnapshots {
@@ -18,16 +18,12 @@ public class JsonSnapshots {
     public JsonSnapshots(String basePackage) {
         jsonSnapshotList = new ArrayList<>();
 
-        Set<String> allTypes = new Reflections(basePackage, new SubTypesScanner(false)).getAllTypes();
-        allTypes.forEach(type -> {
-            try {
-                Class<?> clazz = Class.forName(type);
-                log.info("Adding class: {}", type);
-                jsonSnapshotList.add(new JsonSnapshot(clazz));
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException(e);
-            }
-        });
+        try {
+            ImmutableSet<ClassPath.ClassInfo> classInfos = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClassesRecursive(basePackage);
+            classInfos.forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public void create() {
