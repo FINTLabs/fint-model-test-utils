@@ -11,7 +11,7 @@ apply plugin: 'jacoco'
 
 jar {
     baseName = 'fint-model-test-utils'
-    version = '0.0.7'
+    version = '0.0.8'
 }
 
 sourceCompatibility = 1.8
@@ -32,8 +32,7 @@ dependencies {
     compile('commons-io:commons-io:2.6')
     compile('io.github.benas:random-beans:3.7.0')
     compile("org.projectlombok:lombok:${lombokVersion}")
-
-    testCompile("org.spockframework:spock-core:${spockSpringVersion}")
+    compile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 
 task wrapper(type: Wrapper) {

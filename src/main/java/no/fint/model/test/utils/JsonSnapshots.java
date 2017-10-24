@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import spock.lang.Specification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +21,16 @@ public class JsonSnapshots {
 
         try {
             ImmutableSet<ClassPath.ClassInfo> classInfos = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClassesRecursive(basePackage);
-            classInfos.stream().filter(classInfo -> isNotTestClass(classInfo.getName())).filter(classInfo -> isNotEnum(classInfo.load())).forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
+            classInfos.stream().map(ClassPath.ClassInfo::load).filter(this::isNotTestClass).filter(this::isNotEnum).forEach(clazz -> jsonSnapshotList.add(new JsonSnapshot(clazz)));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private boolean isNotTestClass(String name) {
-        String className = name.toLowerCase();
-        return !className.endsWith("test") && !className.endsWith("spec");
+    private boolean isNotTestClass(Class<?> clazz) {
+        String className = clazz.getSimpleName().toLowerCase();
+        Class<?> superclass = clazz.getSuperclass();
+        return !className.endsWith("test") && superclass != Specification.class;
     }
 
     private boolean isNotEnum(Class<?> clazz) {
