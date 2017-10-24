@@ -115,7 +115,7 @@ public class JsonSnapshot {
             objectMapper.readValue(snapshotFile, modelClass);
             return true;
         } catch (IOException e) {
-            log.error("Exception when trying to read snapshot json file ({}).\n{}", snapshotFile.getName(), e.getMessage());
+            log.error("Exception when trying to read snapshot json file - {}.\n{}", snapshotFile.getName(), e.getMessage());
             return false;
         }
     }
@@ -127,7 +127,7 @@ public class JsonSnapshot {
 
             Sets.SetView<String> difference = Sets.difference(modelClassRelationNames, snapshotRelationNames);
             if (difference.size() > 0) {
-                log.error("The relation names are different in snapshot file and model class.\n{}", difference.toString());
+                log.error("The relation names are different in snapshot file and model class - {}.\n{}", relationNamesFile.getName(), difference.toString());
                 return false;
             } else {
                 return true;
