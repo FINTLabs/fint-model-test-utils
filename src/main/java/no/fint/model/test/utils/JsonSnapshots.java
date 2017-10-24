@@ -35,8 +35,14 @@ public class JsonSnapshots {
         return !clazz.isEnum();
     }
 
-    public void create() {
-        jsonSnapshotList.forEach(JsonSnapshot::create);
+    public boolean create() {
+        for (JsonSnapshot jsonSnapshot : jsonSnapshotList) {
+            boolean snapshotCreated = jsonSnapshot.create();
+            if (!snapshotCreated) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void cleanSnapshotFolder() {

@@ -15,9 +15,10 @@ class JsonSnapshotsSpec extends Specification {
 
     def "Create json snapshots"() {
         when:
-        jsonSnapshots.create()
+        def created = jsonSnapshots.create()
 
         then:
+        created
         jsonSnapshots.jsonSnapshotList.each {
             assert !it.modelClass.isEnum()
             assert it.snapshotFolderExists()

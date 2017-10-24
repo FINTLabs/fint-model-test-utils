@@ -74,10 +74,11 @@ public class JsonSnapshot {
         }
     }
 
-    public void create() {
+    public boolean create() {
         createSnapshotFolder();
         createSnapshotJson();
         createRelationsJson();
+        return true;
     }
 
     private void createSnapshotJson() {

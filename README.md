@@ -9,7 +9,7 @@ repositories {
     }
 }
 
-testCompile('no.fint:fint-model-test-utils:1.0.0')
+testCompile('no.fint:fint-model-test-utils:1.0.1')
 ```
 
 ## Usage

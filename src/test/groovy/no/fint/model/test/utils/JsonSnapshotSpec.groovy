@@ -16,9 +16,10 @@ class JsonSnapshotSpec extends Specification {
 
     def "Create json snapshot"() {
         when:
-        jsonSnapshot.create()
+        def created = jsonSnapshot.create()
 
         then:
+        created
         jsonSnapshot.snapshotFolderExists()
         jsonSnapshot.exists()
     }
