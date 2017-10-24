@@ -126,9 +126,11 @@ public class JsonSnapshot {
             Set<String> modelClassRelationNames = new HashSet<>(Arrays.asList(getRelationNames()));
             Set<String> snapshotRelationNames = new HashSet<>(Arrays.asList(objectMapper.readValue(relationNamesFile, String[].class)));
 
-            Sets.SetView<String> difference = Sets.difference(modelClassRelationNames, snapshotRelationNames);
-            if (difference.size() > 0) {
-                log.error("Test failed.\n - Class: {}\n - The relation names are different in snapshot file and model class:\n - Differences: {}", modelClass.getName(), difference.toString());
+            Sets.SetView<String> differencesFromModelClass = Sets.difference(modelClassRelationNames, snapshotRelationNames);
+            Sets.SetView<String> differencesFromSnapshotfile = Sets.difference(snapshotRelationNames, modelClassRelationNames);
+
+            if (differencesFromModelClass.size() > 0 || differencesFromSnapshotfile.size() > 0) {
+                log.error("Test failed.\n - Class: {}\n - The relation names are different in snapshot file and model class:\n - Relation names in model and not in snapshot: {}\n - Relation names in snapshot and not in model: {}", modelClass.getName(), differencesFromModelClass.toString(), differencesFromSnapshotfile.toString());
                 return false;
             } else {
                 return true;
@@ -137,7 +139,6 @@ public class JsonSnapshot {
             log.error("Exception when trying to read relation names json file ({}).\n{}", snapshotFile.getName(), e.getMessage());
             return false;
         }
-
     }
 
 }
