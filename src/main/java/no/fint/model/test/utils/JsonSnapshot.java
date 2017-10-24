@@ -106,7 +106,6 @@ public class JsonSnapshot {
             Field[] declaredFields = declaredClasses[0].getDeclaredFields();
             return Arrays.stream(declaredFields).map(Field::getName).filter(name -> !name.equals("$VALUES")).toArray(String[]::new);
         } else {
-            log.debug("No enum for relation names found in class {}", modelClass.getSimpleName());
             return new String[]{};
         }
     }
