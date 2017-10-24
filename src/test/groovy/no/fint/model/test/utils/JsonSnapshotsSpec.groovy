@@ -19,6 +19,7 @@ class JsonSnapshotsSpec extends Specification {
 
         then:
         jsonSnapshots.jsonSnapshotList.each {
+            assert !it.modelClass.isEnum()
             assert it.snapshotFolderExists()
             assert it.exists()
         }

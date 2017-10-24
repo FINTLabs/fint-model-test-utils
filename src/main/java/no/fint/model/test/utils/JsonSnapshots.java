@@ -20,7 +20,7 @@ public class JsonSnapshots {
 
         try {
             ImmutableSet<ClassPath.ClassInfo> classInfos = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClassesRecursive(basePackage);
-            classInfos.stream().filter(classInfo -> isNotTestClass(classInfo.getName())).forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
+            classInfos.stream().filter(classInfo -> isNotTestClass(classInfo.getName())).filter(classInfo -> isNotEnum(classInfo.load())).forEach(classInfo -> jsonSnapshotList.add(new JsonSnapshot(classInfo.load())));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -29,6 +29,10 @@ public class JsonSnapshots {
     private boolean isNotTestClass(String name) {
         String className = name.toLowerCase();
         return !className.endsWith("test") && !className.endsWith("spec");
+    }
+
+    private boolean isNotEnum(Class<?> clazz) {
+        return !clazz.isEnum();
     }
 
     public void create() {

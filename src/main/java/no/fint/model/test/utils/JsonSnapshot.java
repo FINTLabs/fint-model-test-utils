@@ -21,8 +21,9 @@ public class JsonSnapshot {
     private static final String SNAPSHOT_FOLDER = "src/test/resources/snapshots";
 
     private String snapshotFolder;
-    private Class<?> modelClass;
 
+    @Getter(AccessLevel.PACKAGE)
+    private Class<?> modelClass;
     @Getter(AccessLevel.PACKAGE)
     private File snapshotFile;
     @Getter(AccessLevel.PACKAGE)
@@ -105,7 +106,7 @@ public class JsonSnapshot {
             Field[] declaredFields = declaredClasses[0].getDeclaredFields();
             return Arrays.stream(declaredFields).map(Field::getName).filter(name -> !name.equals("$VALUES")).toArray(String[]::new);
         } else {
-            log.info("No enum for relation names found in class {}", modelClass.getSimpleName());
+            log.debug("No enum for relation names found in class {}", modelClass.getSimpleName());
             return new String[]{};
         }
     }
