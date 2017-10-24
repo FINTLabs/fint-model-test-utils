@@ -28,9 +28,7 @@ public class JsonSnapshots {
     }
 
     private boolean isNotTestClass(Class<?> clazz) {
-        String className = clazz.getSimpleName().toLowerCase();
-        Class<?> superclass = clazz.getSuperclass();
-        return !className.endsWith("test") && superclass != Specification.class;
+        return clazz.getSuperclass() != Specification.class;
     }
 
     private boolean isNotEnum(Class<?> clazz) {
