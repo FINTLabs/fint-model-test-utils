@@ -22,7 +22,7 @@ When new model classes are generated these can be matched against the persisted 
 
 1. The setup method initializes the JsonSnapshots. It will scan the package that the test class is in (when sending in `this`) and find all model classes.
 It is also possible to send in a String containing the package name, if the test class and the model classes are not in the same package.
-2. The `create FINT model snapshots` test generates the json files.
+2. The `create snapshots` test generates the json files.
 When calling create it will first remove all files in the `src/test/resources/snapshots` folder before generating new.
 The test is setup to only run when the system property `UPDATE_SNAPSHOT` is set.
 The return value from create is a boolean indicating if the snapshot file generation has succeeded.
@@ -38,7 +38,7 @@ class ModelSpec extends Specification {
     }
 
     @Requires({ Boolean.valueOf(sys['UPDATE_SNAPSHOT']) })
-    def "Create FINT model snapshots"() {
+    def "Create snapshots"() {
         expect:
         jsonSnapshots.create()
     }
