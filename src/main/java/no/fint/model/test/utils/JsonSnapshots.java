@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import spock.lang.Specification;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,12 @@ public class JsonSnapshots {
 
         try {
             ImmutableSet<ClassPath.ClassInfo> classInfos = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClassesRecursive(basePackage);
-            classInfos.stream().map(ClassPath.ClassInfo::load).filter(this::isNotTestClass).filter(this::isNotEnum).forEach(clazz -> jsonSnapshotList.add(new JsonSnapshot(clazz)));
+            classInfos.stream()
+                    .map(ClassPath.ClassInfo::load)
+                    .filter(this::isNotTestClass)
+                    .filter(this::isNotEnum)
+                    .filter(this::isNotAbstract)
+                    .forEach(clazz -> jsonSnapshotList.add(new JsonSnapshot(clazz)));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -33,6 +39,10 @@ public class JsonSnapshots {
 
     private boolean isNotEnum(Class<?> clazz) {
         return !clazz.isEnum();
+    }
+
+    private boolean isNotAbstract(Class<?> clazz) {
+        return !Modifier.isAbstract(clazz.getModifiers());
     }
 
     public boolean create() {
