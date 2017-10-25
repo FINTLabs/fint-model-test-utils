@@ -13,6 +13,14 @@ class JsonSnapshotsSpec extends Specification {
         jsonSnapshots.cleanSnapshotFolder()
     }
 
+    def "Create json snapshots with string base package"() {
+        when:
+        def snapshots = new JsonSnapshots(this)
+
+        then:
+        snapshots.jsonSnapshotList.size() > 0
+    }
+
     def "Create json snapshots"() {
         when:
         def created = jsonSnapshots.create()

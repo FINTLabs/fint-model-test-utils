@@ -9,7 +9,7 @@ repositories {
     }
 }
 
-testCompile('no.fint:fint-model-test-utils:1.0.3')
+testCompile('no.fint:fint-model-test-utils:1.1.0')
 ```
 
 ## Usage
@@ -20,7 +20,8 @@ When new model classes are generated these can be matched against the persisted 
 
 ### Test setup
 
-1. The setup method initializes the JsonSnapshots. It will scan the `no.fint.model` package and find all model classes.
+1. The setup method initializes the JsonSnapshots. It will scan the package that the test class is in (when sending in `this`) and find all model classes.
+It is also possible to send in a String containing the package name, if the test class and the model classes are not in the same package.
 2. The `create FINT model snapshots` test generates the json files.
 When calling create it will first remove all files in the `src/test/resources/snapshots` folder before generating new.
 The test is setup to only run when the system property `UPDATE_SNAPSHOT` is set.
@@ -33,7 +34,7 @@ class ModelSpec extends Specification {
     private JsonSnapshots jsonSnapshots
 
     void setup() {
-        jsonSnapshots = new JsonSnapshots('no.fint.model')
+        jsonSnapshots = new JsonSnapshots(this) // or new JsonSnapshots('no.fint.model')
     }
 
     @Requires({ Boolean.valueOf(sys['UPDATE_SNAPSHOT']) })

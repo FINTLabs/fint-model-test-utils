@@ -17,6 +17,10 @@ public class JsonSnapshots {
     @Getter
     private List<JsonSnapshot> jsonSnapshotList;
 
+    public JsonSnapshots(Object basePackageObject) {
+        this(basePackageObject.getClass().getPackage().getName());
+    }
+
     public JsonSnapshots(String basePackage) {
         jsonSnapshotList = new ArrayList<>();
 
