@@ -11,5 +11,6 @@ public class TestModel {
     }
 
     private String test;
+    private int value;
     private TestModelNested nestedObj;
 }

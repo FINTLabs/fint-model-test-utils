@@ -1,5 +1,6 @@
 package no.fint.model.test.utils
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.fint.model.test.utils.testmodel.TestModel
 import spock.lang.Specification
 
@@ -57,5 +58,25 @@ class JsonSnapshotSpec extends Specification {
         then:
         !matchesSnapshot
         !matchesRelationNames
+    }
+
+    def "Do not match json snapshot when property is removed in snapshot"() {
+        given:
+        def objectMapper = new ObjectMapper()
+
+        jsonSnapshot.create()
+        def snapshotFile = jsonSnapshot.getSnapshotFile()
+        def json = snapshotFile.text
+        def testModel = objectMapper.readValue(json, TestModel)
+        testModel.test = null
+
+        json = objectMapper.writeValueAsString(testModel)
+        snapshotFile.write(json)
+
+        when:
+        def matchesSnapshot = jsonSnapshot.matchesSnapshot()
+
+        then:
+        !matchesSnapshot
     }
 }

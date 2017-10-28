@@ -7,14 +7,15 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class JsonSnapshot {
@@ -114,10 +115,27 @@ public class JsonSnapshot {
 
     public boolean matchesSnapshot() {
         try {
-            objectMapper.readValue(snapshotFile, modelClass);
-            return true;
+            Object object = objectMapper.readValue(snapshotFile, modelClass);
+            return matchesProperties(object);
         } catch (IOException e) {
             log.error("Test failed.\n - Class: {}\n - Exception when trying to read snapshot json file.\n - {}", modelClass.getName(), e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean matchesProperties(Object object) {
+        try {
+            Map<String, String> describe = BeanUtils.describe(object);
+            List<Map.Entry<String, String>> nullEntries = describe.entrySet().stream().filter(entry -> entry.getValue() == null).collect(Collectors.toList());
+            if (nullEntries.size() > 0) {
+                List<String> nullKeys = nullEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
+                log.error("Test failed.\n - Class: {}\n - Property value is null: {}.", modelClass.getName(), nullKeys);
+                return false;
+            } else {
+                return true;
+            }
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            log.error("Test failed.\n - Class: {}\n - Exception when trying to read property values.\n - {}", modelClass.getName(), e.getMessage());
             return false;
         }
     }
