@@ -25,8 +25,6 @@ repositories {
 
 apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/v1.0.14/dependencies.gradle'
 dependencies {
-    compile('no.fint:fint-administrasjon-model-java:3.8.11-alpha-1')
-
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile('com.google.guava:guava:23.2-jre')
     compile('commons-io:commons-io:2.6')
