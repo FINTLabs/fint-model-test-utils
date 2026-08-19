@@ -28,7 +28,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile('com.google.guava:guava:23.2-jre')
     compile('commons-io:commons-io:2.6')
-    compile('commons-beanutils:commons-beanutils:1.9.3')
+    compile('commons-beanutils:commons-beanutils:1.11.0')
     compile('io.github.benas:random-beans:3.7.0')
     compile("org.projectlombok:lombok:${lombokVersion}")
     compile("org.spockframework:spock-core:${spockSpringVersion}")
