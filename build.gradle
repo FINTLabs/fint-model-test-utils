@@ -27,7 +27,7 @@ apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile('com.google.guava:guava:23.2-jre')
-    compile('commons-io:commons-io:2.6')
+    compile('commons-io:commons-io:2.22.0')
     compile('commons-beanutils:commons-beanutils:1.9.3')
     compile('io.github.benas:random-beans:3.7.0')
     compile("org.projectlombok:lombok:${lombokVersion}")
