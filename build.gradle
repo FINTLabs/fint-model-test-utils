@@ -26,7 +26,7 @@ repositories {
 apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/v1.0.14/dependencies.gradle'
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compile('com.google.guava:guava:23.2-jre')
+    compile('com.google.guava:guava:33.6.0-jre')
     compile('commons-io:commons-io:2.6')
     compile('commons-beanutils:commons-beanutils:1.9.3')
     compile('io.github.benas:random-beans:3.7.0')
